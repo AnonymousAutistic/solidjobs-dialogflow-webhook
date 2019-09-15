@@ -1,0 +1,35 @@
+{
+  "responseId": "d9fd0c0f-c8f3-49ce-bfed-db982d0c2613-ad9426ce",
+  "queryResult": {
+    "queryText": "hola",
+    "action": "input.welcome",
+    "parameters": {},
+    "allRequiredParamsPresent": true,
+    "fulfillmentText": "¡Hola! Veo que no tienes ningún CV. ¡Empecemos! ¿Cómo te definirías brevemente? Por ejemplo, estudiante, recepcionista, programadora, escritor...",
+    "fulfillmentMessages": [
+      {
+        "text": {
+          "text": [
+            "¡Hola! Veo que no tienes ningún CV. ¡Empecemos! ¿Cómo te definirías brevemente? Por ejemplo, estudiante, recepcionista, programadora, escritor..."
+          ]
+        }
+      }
+    ],
+    "outputContexts": [
+      {
+        "name": "projects/solidjobs-1566281418724/agent/sessions/6841c69e-5c94-7c9d-39e6-6448b7e8a41e/contexts/dp_city",
+        "lifespanCount": 5
+      }
+    ],
+    "intent": {
+      "name": "projects/solidjobs-1566281418724/agent/intents/1762189c-79a9-40e1-b2a1-08f375d46d71",
+      "displayName": "Default Welcome Intent"
+    },
+    "intentDetectionConfidence": 1.0,
+    "languageCode": "es"
+  },
+  "originalDetectIntentRequest": {
+    "payload": {}
+  },
+  "session": "projects/solidjobs-1566281418724/agent/sessions/6841c69e-5c94-7c9d-39e6-6448b7e8a41e"
+}

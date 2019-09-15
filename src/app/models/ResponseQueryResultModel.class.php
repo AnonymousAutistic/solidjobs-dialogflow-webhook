@@ -4,7 +4,7 @@
 namespace Solidjobs\Intent\IntentModels;
 
 
-class QueryResultModel
+class ResponseQueryResultModel
 {
     /**
      * @var string
@@ -227,5 +227,27 @@ class QueryResultModel
     public function setLanguageCode($languageCode)
     {
         $this->languageCode = $languageCode;
+    }
+
+    /**
+     * @param $array
+     * @return ResponseQueryResultModel
+     */
+    public static function getFromArray($array) {
+        $out = new ResponseQueryResultModel();
+
+        $out->setText($array['queryText']);
+        $out->setAction($array['action']);
+        $out->setParameters($array['parameters']);
+        $out->setParameters($array['parameters']);
+        $out->setAllRequiredParamsPresent($array['allRequiredParamsPresent']);
+        $out->setFullfillmentText($array['fulfillmentText']);
+        $out->setFullfillmentMessages($array['fulfillmentMessages']);
+        $out->setOutputContexts($array['outputContexts']);
+        $out->setIntent($array['intent']);
+        $out->setIntentDetectionConfidence($array['intentDetectionConfidence']);
+        $out->setLanguageCode($array['languageCode']);
+
+        return $out;
     }
 }

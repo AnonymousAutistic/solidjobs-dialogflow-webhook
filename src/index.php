@@ -27,4 +27,9 @@ try{
 
 } catch (\Throwable $throwable) {
     // OOPS! @todo exception hierarchy
+    echo '<pre>' . json_encode([
+            'error' => $throwable->getMessage(),
+            'on' => $throwable->getFile() . ':' . $throwable->getLine(),
+            'trace' => $throwable->getTrace()
+        ], JSON_PRETTY_PRINT);
 }

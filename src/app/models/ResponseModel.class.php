@@ -4,6 +4,8 @@ namespace Solidjobs\Intent\IntentModels;
 
 class ResponseModel
 {
+    const QUERY_RESULT_KEY = 'queryResult';
+
     /**
      * @var string
      */
@@ -17,7 +19,7 @@ class ResponseModel
      */
     private $id;
     /**
-     * @var QueryResultModel
+     * @var ResponseQueryResultModel
      */
     private $queryResult;
     /**
@@ -78,7 +80,7 @@ class ResponseModel
     }
 
     /**
-     * @return QueryResultModel
+     * @return ResponseQueryResultModel
      */
     public function getQueryResult()
     {
@@ -86,7 +88,7 @@ class ResponseModel
     }
 
     /**
-     * @param QueryResultModel $queryResult
+     * @param ResponseQueryResultModel $queryResult
      */
     public function setQueryResult($queryResult)
     {
@@ -123,5 +125,32 @@ class ResponseModel
     public function setSession($session)
     {
         $this->session = $session;
+    }
+
+    /**
+     * Parse a ResponseModel from RAW response from DialogFlow
+     *
+     * @param string $raw
+     * @return ResponseModel
+     */
+    public static function getFromRaw($raw)
+    {
+        /**
+         * Instantiates a new Response Model
+         */
+        $out = new ResponseModel();
+
+        /**
+         * Populate data
+         */
+        $out->setRaw($raw);
+        $out->setProperties(json_decode($out->getRaw(), true));
+        $out->setId($out->getProperties()['responseId']);
+        $out->setOriginalDetectIntentRequest($out->getProperties()['originalDetectIntentRequest']);
+        $out->setSession($out->getProperties()['session']);
+
+        $out->setQueryResult(ResponseQueryResultModel::getFromArray($out->getProperties()[self::QUERY_RESULT_KEY]));
+
+        return $out;
     }
 }

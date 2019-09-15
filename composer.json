@@ -4,7 +4,10 @@
   },
   "autoload": {
     "psr-4": {
-      "Solidjobs\\Intent\\": "src/app/"
+      "Solidjobs\\Intent\\": "src/app/",
+      "Solidjobs\\Intent\\IntentModels\\": "src/app/models",
+      "Solidjobs\\Intent\\Intents\\": "src/app/intents",
+      "Solidjobs\\Intent\\Services\\": "src/app/services"
     }
   }
 }
