@@ -1,0 +1,10 @@
+{
+  "require": {
+    "google/cloud-dialogflow":  "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Solidjobs\\Intent\\": "src/app/"
+    }
+  }
+}
