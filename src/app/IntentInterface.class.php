@@ -4,7 +4,7 @@
 namespace Solidjobs\Intent;
 
 
-use Solidjobs\Intent\IntentModels\IntentModel;
+use Solidjobs\Intent\IntentModels\ResponseModel;
 
 interface IntentInterface
 {
@@ -14,8 +14,8 @@ interface IntentInterface
      */
 
     /**
-     * @param IntentModel $intentModel
+     * @param ResponseModel $intentModel
      * @return mixed
      */
-    public function runIntent(IntentModel $intentModel);
+    public function runIntent(ResponseModel $intentModel);
 }
