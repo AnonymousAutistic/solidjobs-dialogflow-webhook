@@ -17,7 +17,7 @@ class Service
     /**
      * @var static
      */
-    static $instance;
+    protected static $instance;
 
     /**
      * Service constructor.
@@ -27,7 +27,7 @@ class Service
     }
 
     /**
-     * @return mixed
+     * @return static
      */
     public static function getInstance()
     {

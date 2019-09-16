@@ -13,6 +13,8 @@ class SolidjobsAppService extends Service
     /** @todo move it to configuration system */
     const SERVICE_URL = 'https://app.solidjobs.org/api/';
 
+    const SERVICE_DIALOGFLOW_LOGIN = 'login/dialogflow';
+
     const SERVICE_PERSONAL_DATA = 'cv';
     const SERVICE_JOB_EXPERIENCE = 'cv/job_experience';
     const SERVICE_TRAINING = 'cv/training';
@@ -28,10 +30,42 @@ class SolidjobsAppService extends Service
 
     /**
      * @param string $secretPhrase
+     * @throws \Exception
      */
     public function login(string $secretPhrase)
     {
-        $this->setToken($secretPhrase); // @todo
+        $httpsService = HttpsService::getInstance();
+
+        /**
+         * POST Request
+         */
+        $out = $httpsService->post(
+            self::SERVICE_URL . self::SERVICE_DIALOGFLOW_LOGIN,
+            [
+                'Content-Type: application/json'
+            ],
+            [
+                'phrase' => $secretPhrase
+            ]
+        );
+
+        /**
+         * $out can be false in case of fail, in this case json_decode will return NULL
+         * so it won't be validated after, avoiding error displaying.
+         */
+        $out = json_decode($out, true);
+
+        /**
+         * If response is wrong, throw an exception for be handled on caller
+         */
+        if (!is_array($out) || !array_key_exists('token', $out)) {
+            throw new \Exception('LOGIN_FAILED'); // @todo create exception hierarchy
+        }
+
+        /**
+         * Set token on service
+         */
+        $this->setToken($out['token']);
     }
 
     /**
