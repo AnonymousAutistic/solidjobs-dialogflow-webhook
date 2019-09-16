@@ -91,6 +91,8 @@ class SolidjobsAppService extends Service
     // region get
 
     /**
+     * Generic GET request in order to get Object from API PANEL from SolidJobs
+     *
      * @param string $serviceObject
      * @return array|mixed
      * @throws \Exception
