@@ -90,10 +90,40 @@ class SolidjobsAppService extends Service
 
     // region get
 
+    /**
+     * @return array|mixed
+     * @throws \Exception
+     */
     public function getPersonalData()
     {
-        // @todo
-        return [];
+        $httpsService = HttpsService::getInstance();
+
+        /**
+         * POST Request
+         */
+        $out = $httpsService->get(
+            self::SERVICE_URL . self::SERVICE_PERSONAL_DATA,
+            [
+                'Content-Type: application/json',
+                'token: ' . $this->getToken()
+            ]
+        );
+
+        /**
+         * $out can be false in case of fail, in this case json_decode will return NULL
+         * so it won't be validated after, avoiding error displaying.
+         */
+        /** @var array $out */
+        $out = json_decode($out, true);
+
+        /**
+         * If response is wrong, throw an exception for be handled on caller
+         */
+        if (!is_array($out)) {
+            throw new \Exception('REQUEST_FAILED'); // @todo create exception hierarchy
+        }
+
+        return $out;
     }
 
     public function getJobExperiences()
