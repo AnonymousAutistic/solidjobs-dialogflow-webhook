@@ -355,13 +355,51 @@ class SolidjobsAppService extends Service
     // region remove
 
     /**
+     * Generic DELETE request in order to remove Object from API PANEL from SolidJobs
+     *
+     * @param string $serviceObject
+     * @return array|mixed
+     * @throws \Exception
+     */
+    private function remove(string $serviceObject)
+    {
+        $httpsService = HttpsService::getInstance();
+
+        /**
+         * POST Request
+         */
+        $out = $httpsService->delete(
+            self::SERVICE_URL . $serviceObject,
+            [
+                'Content-Type: application/json',
+                'token: ' . $this->getToken()
+            ]
+        );
+
+        /**
+         * $out can be false in case of fail, in this case json_decode will return NULL
+         * so it won't be validated after, avoiding error displaying.
+         */
+        /** @var array $out */
+        $out = json_decode($out, true);
+
+        /**
+         * If response is wrong, throw an exception for be handled on caller
+         */
+        if (!is_array($out)) {
+            throw new \Exception('REQUEST_FAILED'); // @todo create exception hierarchy
+        }
+
+        return $out;
+    }
+
+    /**
      * @param int $id
      * @return bool
      */
     public function removeJobExperience(int $id)
     {
-        // @todo
-        return is_int($id);
+        return $this->remove(self::SERVICE_JOB_EXPERIENCE . '/' . $id);
     }
 
     /**
@@ -370,8 +408,7 @@ class SolidjobsAppService extends Service
      */
     public function removeTraining(int $id)
     {
-        // @todo
-        return is_int($id);
+        return $this->remove(self::SERVICE_TRAINING . '/' . $id);
     }
 
     /**
@@ -380,8 +417,7 @@ class SolidjobsAppService extends Service
      */
     public function removeAbility(int $id)
     {
-        // @todo
-        return is_int($id);
+        return $this->remove(self::SERVICE_ABILITY . '/' . $id);
     }
 
     /**
@@ -390,8 +426,7 @@ class SolidjobsAppService extends Service
      */
     public function removeLanguage(int $id)
     {
-        // @todo
-        return is_int($id);
+        return $this->remove(self::SERVICE_LANGUAGE . '/' . $id);
     }
 
     // endregion remove
