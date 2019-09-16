@@ -178,10 +178,94 @@ class SolidjobsAppService extends Service
 
     // region edit
 
-    public function editPersonalData()
+    /**
+     * Generic PUT request in order to edit Object from API PANEL from SolidJobs
+     *
+     * @param string $serviceObject
+     * @param array $data
+     * @return array|mixed
+     * @throws \Exception
+     */
+    private function edit(string $serviceObject, array $data)
     {
-        // @todo
-        return [];
+        $httpsService = HttpsService::getInstance();
+
+        /**
+         * PUT Request
+         */
+        $out = $httpsService->put(
+            self::SERVICE_URL . $serviceObject,
+            [
+                'Content-Type: application/json',
+                'token: ' . $this->getToken()
+            ],
+            $data
+        );
+
+        /**
+         * $out can be false in case of fail, in this case json_decode will return NULL
+         * so it won't be validated after, avoiding error displaying.
+         */
+        /** @var array $out */
+        $out = json_decode($out, true);
+
+        /**
+         * If response is wrong, throw an exception for be handled on caller
+         */
+        if (!is_array($out)) {
+            throw new \Exception('REQUEST_FAILED'); // @todo create exception hierarchy
+        }
+
+        return $out;
+    }
+
+    /**
+     * @param array $personalData
+     * @return array
+     */
+    public function editPersonalData(array $personalData)
+    {
+        return $this->edit(self::SERVICE_PERSONAL_DATA, $personalData);
+    }
+
+    /**
+     * @param int $id
+     * @param array $jobExperience
+     * @return array
+     */
+    public function editJobExperience(int $id, array $jobExperience)
+    {
+        return $this->edit(self::SERVICE_JOB_EXPERIENCE . '/' . $id, $jobExperience);
+    }
+
+    /**
+     * @param int $id
+     * @param array $training
+     * @return array
+     */
+    public function editTraining(int $id, array $training)
+    {
+        return $this->edit(self::SERVICE_TRAINING . '/' . $id, $training);
+    }
+
+    /**
+     * @param int $id
+     * @param array $ability
+     * @return array ['ability' => 'value']
+     */
+    public function editAbility(int $id, array $ability)
+    {
+        return $this->edit(self::SERVICE_ABILITY . '/' . $id, $ability);
+    }
+
+    /**
+     * @param int $id
+     * @param array $language
+     * @return array ['language' => 'value']
+     */
+    public function editLanguage(int $id, array $language)
+    {
+        return $this->edit(self::SERVICE_LANGUAGE . '/' . $id, $language);
     }
 
     // endregion edit
