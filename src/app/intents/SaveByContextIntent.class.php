@@ -105,6 +105,14 @@ class SaveByContextIntent implements IntentInterface
      */
     private function saveCVJobExperience($context, $value)
     {
+        /** Get id from last CVJobExperience */
+        $jobExperiences = SolidjobsAppService::getInstance()->getJobExperiences();
+        $lastJobExperience = $jobExperiences[count($jobExperiences) - 1];
+        $id = $lastJobExperience['id'];
 
+        /** Remove prefix */
+        $field = str_replace('got_cv_personal_data_', '', $context);
+
+        SolidjobsAppService::getInstance()->editJobExperience($id, [$field => $value]);
     }
 }
