@@ -5,6 +5,8 @@ namespace Solidjobs\Intent\Services;
 use Solidjobs\Intent\Service;
 
 /**
+ * This class has region directives for be able the quick navigation on it on Structure feature for IDEs
+ *
  * Class SolidjobsAppService
  * @package Solidjobs\Intent\Services
  */
@@ -118,7 +120,7 @@ class SolidjobsAppService extends Service
         return [];
     }
 
-    // region get
+    // endregion get
 
     // region edit
 
