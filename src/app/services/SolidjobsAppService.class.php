@@ -91,18 +91,19 @@ class SolidjobsAppService extends Service
     // region get
 
     /**
+     * @param string $serviceObject
      * @return array|mixed
      * @throws \Exception
      */
-    public function getPersonalData()
+    private function get(string $serviceObject)
     {
         $httpsService = HttpsService::getInstance();
 
         /**
-         * POST Request
+         * GET Request
          */
         $out = $httpsService->get(
-            self::SERVICE_URL . self::SERVICE_PERSONAL_DATA,
+            self::SERVICE_URL . $serviceObject,
             [
                 'Content-Type: application/json',
                 'token: ' . $this->getToken()
@@ -126,28 +127,49 @@ class SolidjobsAppService extends Service
         return $out;
     }
 
+    /**
+     * @return array|mixed
+     * @throws \Exception
+     */
+    public function getPersonalData()
+    {
+        return $this->get(self::SERVICE_PERSONAL_DATA);
+    }
+
+    /**
+     * @return array|mixed
+     * @throws \Exception
+     */
     public function getJobExperiences()
     {
-        // @todo
-        return [];
+        return $this->get(self::SERVICE_JOB_EXPERIENCE);
     }
 
+    /**
+     * @return array|mixed
+     * @throws \Exception
+     */
     public function getTraining()
     {
-        // @todo
-        return [];
+        return $this->get(self::SERVICE_TRAINING);
     }
 
+    /**
+     * @return array|mixed
+     * @throws \Exception
+     */
     public function getAbilities()
     {
-        // @todo
-        return [];
+        return $this->get(self::SERVICE_ABILITY);
     }
 
+    /**
+     * @return array|mixed
+     * @throws \Exception
+     */
     public function getLanguages()
     {
-        // @todo
-        return [];
+        return $this->get(self::SERVICE_LANGUAGE);
     }
 
     // endregion get
