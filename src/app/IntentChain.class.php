@@ -4,9 +4,13 @@ namespace Solidjobs\Intent;
 
 use Solidjobs\Intent\IntentModels\IntentPayLoadModel;
 use Solidjobs\Intent\IntentModels\ResponseModel;
-use Solidjobs\Intent\IntentModels\ResponseQueryResultModel;
 use Solidjobs\Intent\Intents\DefaultWelcomeIntent;
+use Solidjobs\Intent\Intents\SaveByContextIntent;
 
+/**
+ * Class IntentChain
+ * @package Solidjobs\Intent
+ */
 class IntentChain
 {
     /**
@@ -24,7 +28,8 @@ class IntentChain
      * @var array
      */
     private static $intents = [
-        'Default Welcome Intent' => DefaultWelcomeIntent::class
+        'Default Welcome Intent' => DefaultWelcomeIntent::class,
+        'saveByContext' => SaveByContextIntent::class
     ];
 
     /**
@@ -41,8 +46,13 @@ class IntentChain
 
         $intentName = $this->getResponseModel()->getQueryResult()->getIntent()['displayName'];
 
-        /** @var IntentInterface $intent */
-        $intent = new self::$intents[$intentName];
+        if(array_key_exists($intentName, self::$intents)) {
+            /** @var IntentInterface $intent */
+            $intent = new self::$intents[$intentName];
+        } else {
+            // default intent
+            $intent = new self::$intents['saveByContext'];
+        }
 
         $this->setIntentPayLoad($intent->runIntent($this->getResponseModel()));
     }
