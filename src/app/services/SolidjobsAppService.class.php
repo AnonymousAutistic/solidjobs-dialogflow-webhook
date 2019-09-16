@@ -39,6 +39,16 @@ class SolidjobsAppService extends Service
         $httpsService = HttpsService::getInstance();
 
         /**
+         *
+         * {dialogflow-session} -> link to bind GET https://app.solidjobs.org/login/bind-dialogflow#session=$session
+         *                                      (Panel) PUT https://app.solidjobs.org/api/login/dialogflow -> $session
+                                                Token -> bind -> dialogflow-session (unique)
+         *                                      GET https://app.solidjobs.org/api/login/dialogflow HTTP HEADER dialogflow-token: {dialogflow-session}
+         *                                      ['token' => '']
+         *
+         */
+
+        /**
          * POST Request
          */
         $out = $httpsService->post(
