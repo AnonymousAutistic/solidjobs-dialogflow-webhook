@@ -44,7 +44,8 @@ class SolidjobsAppService extends Service
         $out = $httpsService->post(
             self::SERVICE_URL . self::SERVICE_DIALOGFLOW_LOGIN,
             [
-                'Content-Type: application/json'
+                'Content-Type: application/json',
+                'User-Agent: DialogFlow WebHook'
             ],
             [
                 'phrase' => $secretPhrase
@@ -108,7 +109,8 @@ class SolidjobsAppService extends Service
             self::SERVICE_URL . $serviceObject,
             [
                 'Content-Type: application/json',
-                'token: ' . $this->getToken()
+                'token: ' . $this->getToken(),
+                'User-Agent: DialogFlow WebHook'
             ]
         );
 
@@ -197,7 +199,8 @@ class SolidjobsAppService extends Service
             self::SERVICE_URL . $serviceObject,
             [
                 'Content-Type: application/json',
-                'token: ' . $this->getToken()
+                'token: ' . $this->getToken(),
+                'User-Agent: DialogFlow WebHook'
             ],
             $data
         );
@@ -292,7 +295,8 @@ class SolidjobsAppService extends Service
             self::SERVICE_URL . $serviceObject,
             [
                 'Content-Type: application/json',
-                'token: ' . $this->getToken()
+                'token: ' . $this->getToken(),
+                'User-Agent: DialogFlow WebHook'
             ],
             $data
         );
@@ -372,7 +376,8 @@ class SolidjobsAppService extends Service
             self::SERVICE_URL . $serviceObject,
             [
                 'Content-Type: application/json',
-                'token: ' . $this->getToken()
+                'token: ' . $this->getToken(),
+                'User-Agent: DialogFlow WebHook'
             ]
         );
 
