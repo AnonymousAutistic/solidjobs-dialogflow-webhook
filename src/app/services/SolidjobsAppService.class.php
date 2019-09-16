@@ -272,14 +272,55 @@ class SolidjobsAppService extends Service
 
     // region add
 
+
+    /**
+     * Generic POST request in order to create Object from API PANEL from SolidJobs
+     *
+     * @param string $serviceObject
+     * @param array $data
+     * @return array|mixed
+     * @throws \Exception
+     */
+    private function add(string $serviceObject, array $data)
+    {
+        $httpsService = HttpsService::getInstance();
+
+        /**
+         * POST Request
+         */
+        $out = $httpsService->post(
+            self::SERVICE_URL . $serviceObject,
+            [
+                'Content-Type: application/json',
+                'token: ' . $this->getToken()
+            ],
+            $data
+        );
+
+        /**
+         * $out can be false in case of fail, in this case json_decode will return NULL
+         * so it won't be validated after, avoiding error displaying.
+         */
+        /** @var array $out */
+        $out = json_decode($out, true);
+
+        /**
+         * If response is wrong, throw an exception for be handled on caller
+         */
+        if (!is_array($out)) {
+            throw new \Exception('REQUEST_FAILED'); // @todo create exception hierarchy
+        }
+
+        return $out;
+    }
+
     /**
      * @param array $jobExperience
-     * @return array
+     * @return array|mixed
      */
     public function addJobExperience(array $jobExperience)
     {
-        // @todo
-        return $jobExperience;
+        return $this->add(self::SERVICE_JOB_EXPERIENCE, $jobExperience);
     }
 
     /**
@@ -288,8 +329,7 @@ class SolidjobsAppService extends Service
      */
     public function addTraining(array $training)
     {
-        // @todo
-        return $training;
+        return $this->add(self::SERVICE_TRAINING, $training);
     }
 
     /**
@@ -298,8 +338,7 @@ class SolidjobsAppService extends Service
      */
     public function addAbility(array $ability)
     {
-        // @todo
-        return $ability;
+        return $this->add(self::SERVICE_ABILITY, $ability);
     }
 
     /**
@@ -308,8 +347,7 @@ class SolidjobsAppService extends Service
      */
     public function addLanguage(array $language)
     {
-        // @todo
-        return $language;
+        return $this->add(self::SERVICE_LANGUAGE, $language);
     }
 
     // endregion add
