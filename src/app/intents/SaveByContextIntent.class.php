@@ -17,6 +17,35 @@ use Solidjobs\Intent\Services\SolidjobsAppService;
 class SaveByContextIntent implements IntentInterface
 {
 
+    const ACTION_RELATIONSHIP = [
+        'add_cv_job_experience' =>
+            ['method' => 'addCVJobExperience'],
+        'add_cv_training' =>
+            ['method' => 'addCVTraining'],
+        'add_cv_ability' =>
+            ['method' => 'addCVAbility'],
+        'add_cv_language' =>
+            ['method' => 'addCVLanguage'],
+        'got_cv_personal_data_' =>
+            ['method' => 'saveCVPersonalData'],
+        'got_cv_job_experience_' =>
+            ['method' => 'saveCVJobExperience'],
+        'got_cv_training_' =>
+            ['method' => 'saveCVTraining'],
+        'got_cv_ability_' =>
+            ['method' => 'saveCVAbility'],
+        'got_cv_language_' =>
+            ['method' => 'saveCVLanguage'],
+        'delete_all_cv_job_experience' =>
+            ['method' => 'deleteAllJobExperience'],
+        'delete_all_cv_training' =>
+            ['method' => 'deleteAllTraining'],
+        'delete_all_cv_ability' =>
+            ['method' => 'deleteAllAbility'],
+        'delete_all_cv_language' =>
+            ['method' => 'deleteAllLanguage']
+    ];
+
     /**
      * @param ResponseModel $intentModel
      * @return IntentPayLoadModel
