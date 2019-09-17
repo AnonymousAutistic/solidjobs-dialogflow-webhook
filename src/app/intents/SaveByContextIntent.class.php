@@ -19,31 +19,31 @@ class SaveByContextIntent implements IntentInterface
 
     const ACTION_RELATIONSHIP = [
         'add_cv_job_experience' =>
-            ['method' => 'addCVJobExperience'],
+            ['method' => 'addCVJobExperience', 'parameters' => false],
         'add_cv_training' =>
-            ['method' => 'addCVTraining'],
+            ['method' => 'addCVTraining', 'parameters' => false],
         'add_cv_ability' =>
-            ['method' => 'addCVAbility'],
+            ['method' => 'addCVAbility', 'parameters' => false],
         'add_cv_language' =>
-            ['method' => 'addCVLanguage'],
+            ['method' => 'addCVLanguage', 'parameters' => false],
         'got_cv_personal_data_' =>
-            ['method' => 'saveCVPersonalData'],
+            ['method' => 'saveCVPersonalData', 'parameters' => true],
         'got_cv_job_experience_' =>
-            ['method' => 'saveCVJobExperience'],
+            ['method' => 'saveCVJobExperience', 'parameters' => true],
         'got_cv_training_' =>
-            ['method' => 'saveCVTraining'],
+            ['method' => 'saveCVTraining', 'parameters' => true],
         'got_cv_ability_' =>
-            ['method' => 'saveCVAbility'],
+            ['method' => 'saveCVAbility', 'parameters' => true],
         'got_cv_language_' =>
-            ['method' => 'saveCVLanguage'],
+            ['method' => 'saveCVLanguage', 'parameters' => true],
         'delete_all_cv_job_experience' =>
-            ['method' => 'deleteAllJobExperience'],
+            ['method' => 'deleteAllJobExperience', 'parameters' => false],
         'delete_all_cv_training' =>
-            ['method' => 'deleteAllTraining'],
+            ['method' => 'deleteAllTraining', 'parameters' => false],
         'delete_all_cv_ability' =>
-            ['method' => 'deleteAllAbility'],
+            ['method' => 'deleteAllAbility', 'parameters' => false],
         'delete_all_cv_language' =>
-            ['method' => 'deleteAllLanguage']
+            ['method' => 'deleteAllLanguage', 'parameters' => false]
     ];
 
     /**
@@ -97,11 +97,19 @@ class SaveByContextIntent implements IntentInterface
          * Dynamic call method actions based on a collection indexed by key
          */
         foreach ($contexts as $context) {
+            /** @var string $key Clean parameters on key like git_cv_personal_data_firstName where firstName is the parameter */
             $key = preg_replace('/(' . implode('|', array_keys(self::ACTION_RELATIONSHIP)) . ')[a-zA-Z0-9_]{0,}/', '$1', $context);
+            /**
+             * Check if the cleaned key matches with some key on action's key
+             */
             if (array_key_exists($key, self::ACTION_RELATIONSHIP)) {
+                /** @var string $method store the method in a variable */
                 $method = self::ACTION_RELATIONSHIP[$key]['method'];
 
-                $this->$method($context, $value);
+                /**
+                 * Dynamic call to method with $context and $value parameters
+                 */
+                self::ACTION_RELATIONSHIP[$key]['parameters'] ? $this->$method($context, $value) : $this->$method();
             }
         }
     }
