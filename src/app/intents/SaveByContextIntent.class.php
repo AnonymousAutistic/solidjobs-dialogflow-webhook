@@ -87,21 +87,23 @@ class SaveByContextIntent implements IntentInterface
     }
 
     /**
-     * @param $context
+     * @param $contexts
      * @param $value
      * @throws \Throwable
      */
-    private function dispatch($context, $value)
+    private function dispatch($contexts, $value)
     {
         /**
-         * @todo improve it with an index and dynamic methods
+         * Dynamic call method actions based on a collection indexed by key
          */
-        if (strpos($context[1], 'got_cv_personal_data_') === 0) {
-            $this->saveCVPersonalData($context, $value);
-        } else if (strpos($context[1], 'add_cv_job_experience') === 0) {
-            $this->addCVJobExperience();
-        } else if (strpos($context[1], 'got_cv_job_experience_') === 0) {
-            $this->saveCVJobExperience($context, $value);
+        foreach (self::ACTION_RELATIONSHIP as $key => $action) {
+            foreach ($contexts as $context) {
+                if (strpos($context, $key) === 0) {
+                    $method = $action['method'];
+
+                    $this->$method($context, $value);
+                }
+            }
         }
     }
 
