@@ -96,13 +96,12 @@ class SaveByContextIntent implements IntentInterface
         /**
          * Dynamic call method actions based on a collection indexed by key
          */
-        foreach (self::ACTION_RELATIONSHIP as $key => $action) {
-            foreach ($contexts as $context) {
-                if (strpos($context, $key) === 0) {
-                    $method = $action['method'];
+        foreach ($contexts as $context) {
+            $key = preg_replace('/(' . implode('|', array_keys(self::ACTION_RELATIONSHIP)) . ')[a-zA-Z0-9_]{0,}/', '$1', $context);
+            if (array_key_exists($key, self::ACTION_RELATIONSHIP)) {
+                $method = self::ACTION_RELATIONSHIP[$key]['method'];
 
-                    $this->$method($context, $value);
-                }
+                $this->$method($context, $value);
             }
         }
     }
