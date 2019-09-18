@@ -17,6 +17,11 @@ use Solidjobs\Intent\Services\SolidjobsAppService;
 class SaveByContextIntent implements IntentInterface
 {
 
+    /**
+     * Actions relation with its methods and its parameters
+     *
+     * This is used for link the context key from dialogFlow to the belonged method
+     */
     const ACTION_RELATIONSHIP = [
         'add_cv_job_experience' =>
             ['method' => 'addCVJobExperience', 'parameters' => false],
