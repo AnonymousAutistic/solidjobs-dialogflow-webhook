@@ -31,10 +31,10 @@ class SolidjobsAppService extends Service
     // region login
 
     /**
-     * @param string $secretPhrase
+     * @param string $dialogFlowSession
      * @throws \Exception
      */
-    public function login(string $secretPhrase)
+    public function login(string $dialogFlowSession)
     {
         $httpsService = HttpsService::getInstance();
 
@@ -43,7 +43,7 @@ class SolidjobsAppService extends Service
          * {dialogflow-session} -> link to bind GET https://app.solidjobs.org/login/bind-dialogflow#session=$session
          *                                      (Panel) PUT https://app.solidjobs.org/api/login/dialogflow -> $session
                                                 Token -> bind -> dialogflow-session (unique)
-         *                                      GET https://app.solidjobs.org/api/login/dialogflow HTTP HEADER dialogflow-token: {dialogflow-session}
+         *                                      GET https://app.solidjobs.org/api/login/dialogflow HTTP HEADER dialogflow-token: {Dialogflow-Session}
          *                                      ['token' => '']
          *
          */
@@ -51,14 +51,12 @@ class SolidjobsAppService extends Service
         /**
          * POST Request
          */
-        $out = $httpsService->post(
+        $out = $httpsService->get(
             self::SERVICE_URL . self::SERVICE_DIALOGFLOW_LOGIN,
             [
                 'Content-Type: application/json',
-                'User-Agent: DialogFlow WebHook'
-            ],
-            [
-                'phrase' => $secretPhrase
+                'User-Agent: DialogFlow WebHook',
+                'Dialogflow-Session: ' . $dialogFlowSession
             ]
         );
 
@@ -69,6 +67,8 @@ class SolidjobsAppService extends Service
         $out = json_decode($out, true);
 
         /**
+         * @todo set a property for logged or anonymous (so we don't get error on an intent to login :)
+         *
          * If response is wrong, throw an exception for be handled on caller
          */
         if (!is_array($out) || !array_key_exists('token', $out)) {
