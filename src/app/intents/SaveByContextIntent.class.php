@@ -77,13 +77,25 @@ class SaveByContextIntent implements IntentInterface
          *
          */
 
+        /**
+         * @todo move parameters to properties... do it properly! ;)
+         */
+
         $data = $intentModel->getQueryResult()->getParameters();
 
         $value = $data['value'];
 
         $this->dispatch($contexts, $value);
 
-        return new IntentPayLoadModel();
+        /**
+         * Output is the same response than the model got, since this Intent is only for save/edit/delete
+         */
+        $intentPayLoad = new IntentPayLoadModel();
+
+        $intentPayLoad->setFulfillmentText($intentModel->getQueryResult()->getFullfillmentText());
+        $intentPayLoad->setFulfillmentMessages($intentModel->getQueryResult()->getFullfillmentMessages());
+
+        return $intentPayLoad;
     }
 
     /**
