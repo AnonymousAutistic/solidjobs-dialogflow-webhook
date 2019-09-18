@@ -219,8 +219,15 @@ class SaveByContextIntent implements IntentInterface
      */
     private function saveCVAbility($context, $value)
     {
-        // @todo
-        throw new \Exception();
+        /** Get id from last CVAbility */
+        $abilities = SolidjobsAppService::getInstance()->getAbilities();
+        $lastAbility = $abilities[count($abilities) - 1];
+        $id = $lastAbility['id'];
+
+        /** Remove prefix */
+        $field = str_replace('got_cv_ability_', '', $context);
+
+        SolidjobsAppService::getInstance()->editAbility($id, [$field => $value]);
     }
 
     /**
@@ -232,8 +239,15 @@ class SaveByContextIntent implements IntentInterface
      */
     private function saveCVLanguage($context, $value)
     {
-        // @todo
-        throw new \Exception();
+        /** Get id from last CVLanguage */
+        $languages = SolidjobsAppService::getInstance()->getLanguages();
+        $lastLanguage = $languages[count($languages) - 1];
+        $id = $lastLanguage['id'];
+
+        /** Remove prefix */
+        $field = str_replace('got_cv_language_', '', $context);
+
+        SolidjobsAppService::getInstance()->editLanguage($id, [$field => $value]);
     }
 
     // endregion edit
@@ -245,7 +259,12 @@ class SaveByContextIntent implements IntentInterface
      */
     private function deleteAllJobExperience()
     {
-        // @todo
+        /** Get id from last CVLanguage */
+        $jobExperiences = SolidjobsAppService::getInstance()->getJobExperiences();
+
+        foreach ($jobExperiences as $jobExperience) {
+            SolidjobsAppService::getInstance()->removeJobExperience($jobExperience['id']);
+        }
     }
 
     /**
@@ -253,7 +272,12 @@ class SaveByContextIntent implements IntentInterface
      */
     private function deleteAllTraining()
     {
-        // @todo
+        /** Get id from last CVLanguage */
+        $trainings = SolidjobsAppService::getInstance()->getTraining();
+
+        foreach ($trainings as $training) {
+            SolidjobsAppService::getInstance()->removeTraining($training['id']);
+        }
     }
 
     /**
@@ -261,7 +285,12 @@ class SaveByContextIntent implements IntentInterface
      */
     private function deleteAllAbility()
     {
-        // @todo
+        /** Get id from last CVLanguage */
+        $abilities = SolidjobsAppService::getInstance()->getAbilities();
+
+        foreach ($abilities as $ability) {
+            SolidjobsAppService::getInstance()->removeAbility($ability['id']);
+        }
     }
 
     /**
@@ -269,7 +298,12 @@ class SaveByContextIntent implements IntentInterface
      */
     private function deleteAllLanguage()
     {
-        // @todo
+        /** Get id from last CVLanguage */
+        $languages = SolidjobsAppService::getInstance()->getLanguages();
+
+        foreach ($languages as $language) {
+            SolidjobsAppService::getInstance()->removeLanguage($language['id']);
+        }
     }
 
     // endregion delete
