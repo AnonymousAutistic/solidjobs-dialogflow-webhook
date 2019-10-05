@@ -5,6 +5,7 @@ namespace Solidjobs\Intent;
 use Solidjobs\Intent\IntentModels\IntentPayLoadModel;
 use Solidjobs\Intent\IntentModels\ResponseModel;
 use Solidjobs\Intent\Intents\DefaultWelcomeIntent;
+use Solidjobs\Intent\Intents\LoginIntent;
 use Solidjobs\Intent\Intents\SaveByContextIntent;
 use Solidjobs\Intent\Services\SolidjobsAppService;
 
@@ -29,7 +30,7 @@ class IntentChain
      * @var array
      */
     private static $intents = [
-        'Default Welcome Intent' => DefaultWelcomeIntent::class,
+        'Default Welcome Intent' => LoginIntent::class,
         'saveByContext' => SaveByContextIntent::class
     ];
 
@@ -49,16 +50,21 @@ class IntentChain
         $this->setResponseModel(ResponseModel::getFromRaw($httpBody));
 
         /**
-         * Perform login on SolidJobs service, so session is loaded
-         */
-        $this->login();
-
-        /**
          * Get intent name and look for the belonged Intent
          */
         $intentName = $this->getResponseModel()->getQueryResult()->getIntent()['displayName'];
 
-        if(array_key_exists($intentName, self::$intents)) {
+        /**
+         * Perform login only if it's not on welcome intent
+         */
+        if ($intentName != 'Default Welcome Intent') {
+            /**
+             * Perform login on SolidJobs service, so session is loaded
+             */
+            $this->login();
+        }
+
+        if (array_key_exists($intentName, self::$intents)) {
             /** @var IntentInterface $intent */
             $intent = new self::$intents[$intentName];
         } else {
@@ -74,9 +80,9 @@ class IntentChain
      */
     private function login()
     {
-        /** @var string $dialogFlowId */
-        $dialogFlowId = $this->getResponseModel()->getId();
-        SolidjobsAppService::getInstance()->login($dialogFlowId);
+        /** @var string $dialogFlowSession */
+        $dialogFlowSession = $this->getResponseModel()->getSession();
+        SolidjobsAppService::getInstance()->loadTokenByDialogFlowSession($dialogFlowSession);
     }
 
     /**

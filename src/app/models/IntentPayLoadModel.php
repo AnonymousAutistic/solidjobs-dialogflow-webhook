@@ -19,7 +19,7 @@ class IntentPayLoadModel
      *
      * @var array
      */
-    private $fulfillmentMessages;
+    private $fulfillmentMessages = [];
 
     /**
      * @return string

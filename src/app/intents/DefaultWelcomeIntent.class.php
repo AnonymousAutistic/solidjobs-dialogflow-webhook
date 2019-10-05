@@ -13,6 +13,7 @@ class DefaultWelcomeIntent implements IntentInterface
     /**
      * @param ResponseModel $intentModel
      * @return IntentPayLoadModel
+     * @throws \Exception
      */
     public function runIntent(ResponseModel $intentModel)
     {
@@ -44,6 +45,7 @@ class DefaultWelcomeIntent implements IntentInterface
 
     /**
      * @return bool
+     * @throws \Exception
      */
     private function hasData()
     {

@@ -31,32 +31,39 @@ class SolidjobsAppService extends Service
     // region login
 
     /**
+     * It binds the token with dialogFlow session on API PANEL
+     *
+     * @param string $token
      * @param string $dialogFlowSession
-     * @throws \Exception
      */
-    public function login(string $dialogFlowSession)
+    public function bindTokenWithDialogFlowSession(string $token, string $dialogFlowSession)
     {
-        $httpsService = HttpsService::getInstance();
+        $httpsService = new HttpsService();
 
         /**
+         * It binds token with dialogflow-session 1:1
+         * POST /login/dialogflow
+         *  -> token (headers)
+         *  -> dialogflow-session
          *
-         * {dialogflow-session} -> link to bind GET https://app.solidjobs.org/login/bind-dialogflow#session=$session
-         *                                      (Panel) PUT https://app.solidjobs.org/api/login/dialogflow -> $session
-                                                Token -> bind -> dialogflow-session (unique)
-         *                                      GET https://app.solidjobs.org/api/login/dialogflow HTTP HEADER dialogflow-token: {Dialogflow-Session}
-         *                                      ['token' => '']
-         *
+         * It returns token belonged with dialogflow-session
+         * PUT /login/dialogflow
+         *  -> dialogflow-session
+         *  <- token
          */
 
         /**
          * POST Request
          */
-        $out = $httpsService->get(
+        $out = $httpsService->post(
             self::SERVICE_URL . self::SERVICE_DIALOGFLOW_LOGIN,
             [
                 'Content-Type: application/json',
                 'User-Agent: DialogFlow WebHook',
-                'Dialogflow-Session: ' . $dialogFlowSession
+                'token: ' . $token
+            ],
+            [
+                'dialogflow-session' => $dialogFlowSession
             ]
         );
 
@@ -71,8 +78,66 @@ class SolidjobsAppService extends Service
          *
          * If response is wrong, throw an exception for be handled on caller
          */
-        if (!is_array($out) || !array_key_exists('token', $out)) {
-            throw new \Exception('LOGIN_FAILED'); // @todo create exception hierarchy
+        if (!is_array($out) || is_array($out) && !array_key_exists('token', $out)) {
+            $this->setToken(null);
+            // throw new \Exception('LOGIN_FAILED'); // @todo create exception hierarchy
+        }
+
+        /**
+         * Set token on service
+         */
+        $this->setToken($out['token']);
+    }
+
+    /**
+     * Get token by dialogFlow session and loads on service
+     *
+     * @param string $dialogFlowSession
+     */
+    public function loadTokenByDialogFlowSession(string $dialogFlowSession)
+    {
+        $httpsService = new HttpsService();
+
+        /**
+         * It binds token with dialogflow-session 1:1
+         * POST /login/dialogflow
+         *  -> token (headers)
+         *  -> dialogflow-session
+         *
+         * It returns token belonged with dialogflow-session
+         * PUT /login/dialogflow
+         *  -> dialogflow-session
+         *  <- token
+         */
+
+        /**
+         * POST Request
+         */
+        $out = $httpsService->put(
+            self::SERVICE_URL . self::SERVICE_DIALOGFLOW_LOGIN,
+            [
+                'Content-Type: application/json',
+                'User-Agent: DialogFlow WebHook'
+            ],
+            [
+                'dialogflow-session' => $dialogFlowSession
+            ]
+        );
+
+        /**
+         * $out can be false in case of fail, in this case json_decode will return NULL
+         * so it won't be validated after, avoiding error displaying.
+         */
+        $out = json_decode($out, true);
+
+        /**
+         * @todo set a property for logged or anonymous (so we don't get error on an intent to login :)
+         *
+         * If response is wrong, throw an exception for be handled on caller
+         */
+        if (!is_array($out) || is_array($out) && !array_key_exists('token', $out)) {
+            $this->setToken(null);
+            // throw new \Exception('LOGIN_FAILED'); // @todo create exception hierarchy
         }
 
         /**
@@ -92,7 +157,7 @@ class SolidjobsAppService extends Service
     /**
      * @param string $token
      */
-    public function setToken(string $token)
+    public function setToken($token)
     {
         $this->token = $token;
     }
@@ -110,7 +175,7 @@ class SolidjobsAppService extends Service
      */
     private function get(string $serviceObject)
     {
-        $httpsService = HttpsService::getInstance();
+        $httpsService = new HttpsService();
 
         /**
          * GET Request
@@ -200,7 +265,7 @@ class SolidjobsAppService extends Service
      */
     private function edit(string $serviceObject, array $data)
     {
-        $httpsService = HttpsService::getInstance();
+        $httpsService = new HttpsService();
 
         /**
          * PUT Request
@@ -296,7 +361,7 @@ class SolidjobsAppService extends Service
      */
     private function add(string $serviceObject, array $data)
     {
-        $httpsService = HttpsService::getInstance();
+        $httpsService = new HttpsService();
 
         /**
          * POST Request
@@ -377,7 +442,7 @@ class SolidjobsAppService extends Service
      */
     private function remove(string $serviceObject)
     {
-        $httpsService = HttpsService::getInstance();
+        $httpsService = new HttpsService();
 
         /**
          * POST Request

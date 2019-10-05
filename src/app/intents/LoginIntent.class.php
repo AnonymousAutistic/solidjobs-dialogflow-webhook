@@ -12,6 +12,7 @@ namespace Solidjobs\Intent\Intents;
 use Solidjobs\Intent\IntentInterface;
 use Solidjobs\Intent\IntentModels\IntentPayLoadModel;
 use Solidjobs\Intent\IntentModels\ResponseModel;
+use Solidjobs\Intent\Services\SolidjobsAppService;
 
 class LoginIntent implements IntentInterface
 {
@@ -36,29 +37,39 @@ class LoginIntent implements IntentInterface
          */
         $intentPayLoad = new IntentPayLoadModel();
 
+        /**
+         * Message it's the same than the message got by user
+         */
+        $message = $this->getIntentModel()->getQueryResult()->getText();
+
+        /**
+         * Got session from dialog flow
+         */
+        $dialogFlowSession = $this->getIntentModel()->getSession();
+
+        // good faith test
+        $token = str_replace(['token: ', 'Token: '], '', $message);
+
+        /**
+         * Send POST to /login/dialogflow with dialogflow session and token for binding
+         */
+        SolidjobsAppService::getInstance()->setToken($token);
+        SolidjobsAppService::getInstance()->bindTokenWithDialogFlowSession($token, $dialogFlowSession);
+
         /** @var string $message Message for bind the dialogflow session with the website login */
-        $message = 'Hola, para iniciar sesión necesito que entres en un link, le des a "Vincular", y luego vuelvas a esta ventana. El link es: ' . $this->getLoginUrl();
+        $message = 'Hola, te doy la bienvenida a SolidJobs. Por el momento únicamente puedo hacer CVs, pero el equipo está trabajando en más cosas. ¿Quieres que creemos tu CV?';
 
         /**
          * Set output
          */
         $intentPayLoad->setFulfillmentText($message);
-        $intentPayLoad->setFulfillmentMessages(['text' => ['message' => $message]]);
+        $intentPayLoad->addResponseMessage($message);
+        // $intentPayLoad->setFulfillmentMessages([['text' => ['message' => $message]]]);
 
         /**
          * Return the response from DialogFlow
          */
         return $intentPayLoad;
-    }
-
-    /**
-     * @todo don't to hardcode urls, add to a config system :)
-     *
-     * @return string
-     */
-    private function getLoginUrl()
-    {
-        return 'https://app.solidjobs.org/login/bind-dialogflow#session=' . $this->getIntentModel()->getSession();
     }
 
     /**
