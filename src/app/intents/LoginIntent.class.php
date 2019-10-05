@@ -56,8 +56,13 @@ class LoginIntent implements IntentInterface
         SolidjobsAppService::getInstance()->setToken($token);
         SolidjobsAppService::getInstance()->bindTokenWithDialogFlowSession($token, $dialogFlowSession);
 
-        /** @var string $message Message for bind the dialogflow session with the website login */
-        $message = 'Hola, te doy la bienvenida a SolidJobs. Por el momento únicamente puedo hacer CVs, pero el equipo está trabajando en más cosas. ¿Quieres que creemos tu CV?';
+        try{
+            $personalData = SolidjobsAppService::getInstance()->getPersonalData();
+
+            $message = 'Hola ' . $personalData['firstName'] . ', te doy la bienvenida a SolidJobs. ¿Quieres que creemos tu curriculum vitae?';
+        } catch (\Throwable $throwable) {
+            $message = 'Ups, parece que hubo un problema iniciando sesión';
+        }
 
         /**
          * Set output

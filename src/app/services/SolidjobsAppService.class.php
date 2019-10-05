@@ -199,7 +199,7 @@ class SolidjobsAppService extends Service
         /**
          * If response is wrong, throw an exception for be handled on caller
          */
-        if (!is_array($out)) {
+        if (!is_array($out) || array_key_exists('TAG', $out)) {
             throw new \Exception('REQUEST_FAILED'); // @todo create exception hierarchy
         }
 
