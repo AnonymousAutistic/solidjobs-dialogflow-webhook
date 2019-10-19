@@ -299,7 +299,8 @@ class SolidjobsAppService extends Service
 
     /**
      * @param array $personalData
-     * @return array
+     * @return array|mixed
+     * @throws \Exception
      */
     public function editPersonalData(array $personalData)
     {

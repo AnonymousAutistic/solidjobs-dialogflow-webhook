@@ -23,14 +23,14 @@ class SaveByContextIntent implements IntentInterface
      * This is used for link the context key from dialogFlow to the belonged method
      */
     const ACTION_RELATIONSHIP = [
-        'add_cv_job_experience' =>
-            ['method' => 'addCVJobExperience', 'parameters' => false],
-        'add_cv_training' =>
-            ['method' => 'addCVTraining', 'parameters' => false],
-        'add_cv_ability' =>
-            ['method' => 'addCVAbility', 'parameters' => false],
-        'add_cv_language' =>
-            ['method' => 'addCVLanguage', 'parameters' => false],
+        'add_cv_job_experience_' =>
+            ['method' => 'addCVJobExperience', 'parameters' => true],
+        'add_cv_training_' =>
+            ['method' => 'addCVTraining', 'parameters' => true],
+        'add_cv_ability_' =>
+            ['method' => 'addCVAbility', 'parameters' => true],
+        'add_cv_language_' =>
+            ['method' => 'addCVLanguage', 'parameters' => true],
         'got_cv_personal_data_' =>
             ['method' => 'saveCVPersonalData', 'parameters' => true],
         'got_cv_job_experience_' =>
@@ -86,17 +86,25 @@ class SaveByContextIntent implements IntentInterface
          * @todo move parameters to properties... do it properly! ;)
          */
 
-        $data = $intentModel->getQueryResult()->getParameters();
+        /**
+         * why parameters ? shouldn't be the phrase?
+         */
+        // $data = $intentModel->getQueryResult()->getParameters();
+        $value = $intentModel->getQueryResult()->getText();
 
-        $value = $data['value'];
+        $outPutContext = $intentModel->getQueryResult()->getOutputContexts();
 
-        $this->dispatch($contexts, $value);
+        // $value = $data['value'];
+
+        $methods = $this->dispatch($contexts, $value);
 
         /**
          * Output is the same response than the model got, since this Intent is only for save/edit/delete
          */
         $intentPayLoad = new IntentPayLoadModel();
 
+        // $intentPayLoad->setFulfillmentText(json_encode([$methods]));
+        // $intentPayLoad->addResponseMessage(json_encode([$methods]));
         $intentPayLoad->setFulfillmentText($intentModel->getQueryResult()->getFullfillmentText());
         $intentPayLoad->setFulfillmentMessages($intentModel->getQueryResult()->getFullfillmentMessages());
 
@@ -107,13 +115,21 @@ class SaveByContextIntent implements IntentInterface
      * @param $contexts
      * @param $value
      * @throws \Throwable
+     * @return array
      */
     private function dispatch($contexts, $value)
     {
+        $methods = [];
         /**
          * Dynamic call method actions based on a collection indexed by key
          */
         foreach ($contexts as $context) {
+            /**
+             * Explode the context name
+             */
+            $context = explode('/', $context['name']);
+            $context = $context[count($context)-1];
+
             /** @var string $key Clean parameters on key like git_cv_personal_data_firstName where firstName is the parameter */
             $key = preg_replace('/(' . implode('|', array_keys(self::ACTION_RELATIONSHIP)) . ')[a-zA-Z0-9_]{0,}/', '$1', $context);
             /**
@@ -123,50 +139,103 @@ class SaveByContextIntent implements IntentInterface
                 /** @var string $method store the method in a variable */
                 $method = self::ACTION_RELATIONSHIP[$key]['method'];
 
+                $methods[] = $method;
+
                 /**
                  * Dynamic call to method with $context and $value parameters
                  */
-                self::ACTION_RELATIONSHIP[$key]['parameters'] ? $this->$method($context, $value) : $this->$method();
+                $methods[] = self::ACTION_RELATIONSHIP[$key]['parameters'] ? $this->$method($context, $value) : $this->$method();
             }
         }
+
+        return $methods;
+    }
+
+    /**
+     * Parse field name to capital letter
+     *
+     * @param $field
+     * @return string
+     */
+    private static function parseFieldName($field)
+    {
+        $fieldParts = explode('_', $field);
+        for($i = 1; $i < count($fieldParts); $i++) {
+            /**
+             * Set first letter capital letter
+             */
+            $firstLetter = strtoupper(substr($fieldParts[$i], 0, 1));
+            $fieldParts[$i] = $firstLetter . substr($fieldParts[$i], 1);
+        }
+
+        /**
+         * Join parts from field
+         */
+        $field = implode('', $fieldParts);
+
+        return $field;
     }
 
     // region add
 
     /**
-     * OUTPUT_CONTEXT = add_cv_job_experience
+     * OUTPUT_CONTEXT = add_cv_job_experience_
+     *
+     * @param $context
+     * @param $value
      */
-    private function addCVJobExperience()
+    private function addCVJobExperience($context, $value)
     {
-        /** Create a new empty job experience */
-        SolidjobsAppService::getInstance()->addJobExperience([]);
+        /** Remove prefix */
+        $field = str_replace('add_cv_job_experience_', '', $context);
+
+        /** Create a new job experience */
+        SolidjobsAppService::getInstance()->addJobExperience([$field => $value]);
     }
 
     /**
-     * OUTPUT_CONTEXT = add_cv_training
+     * OUTPUT_CONTEXT = add_cv_training_
+     *
+     * @param $context
+     * @param $value
      */
-    private function addCVTraining()
+    private function addCVTraining($context, $value)
     {
-        /** Create new empty training */
-        SolidjobsAppService::getInstance()->addTraining([]);
+        /** Remove prefix */
+        $field = str_replace('add_cv_training_', '', $context);
+
+        /** Create new training */
+        SolidjobsAppService::getInstance()->addTraining([$field => $value]);
     }
 
     /**
-     * OUTPUT_CONTEXT = add_cv_ability
+     * OUTPUT_CONTEXT = add_cv_ability_
+     *
+     * @param $context
+     * @param $value
      */
-    private function addCVAbility()
+    private function addCVAbility($context, $value)
     {
+        /** Remove prefix */
+        $field = str_replace('add_cv_ability_', '', $context);
+
         /** Create new empty CVAbility */
-        SolidjobsAppService::getInstance()->addAbility([]);
+        SolidjobsAppService::getInstance()->addAbility([$field => $value]);
     }
 
     /**
-     * OUTPUT_CONTEXT = add_cv_language
+     * OUTPUT_CONTEXT = add_cv_language_
+     *
+     * @param $context
+     * @param $value
      */
-    private function addCVLanguage()
+    private function addCVLanguage($context, $value)
     {
+        /** Remove prefix */
+        $field = str_replace('add_cv_language_', '', $context);
+
         /** Create new CVLanguage */
-        SolidjobsAppService::getInstance()->addLanguage([]);
+        SolidjobsAppService::getInstance()->addLanguage([$field => $value]);
     }
 
     // endregion add
@@ -178,13 +247,23 @@ class SaveByContextIntent implements IntentInterface
      *
      * @param $context
      * @param $value
+     * @throws \Exception
+     * @return array
      */
     private function saveCVPersonalData($context, $value)
     {
         /** Remove prefix */
         $field = str_replace('got_cv_personal_data_', '', $context);
 
-        SolidjobsAppService::getInstance()->editPersonalData([$field => $value]);
+        /**
+         * Parse field for transform to capital (pascal notation)
+         */
+        $field = self::parseFieldName($field);
+
+        /**
+         * Send field edit to backend
+         */
+        return SolidjobsAppService::getInstance()->editPersonalData([$field => $value]);
     }
 
     /**
