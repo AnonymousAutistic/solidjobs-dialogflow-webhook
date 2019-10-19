@@ -92,8 +92,6 @@ class SaveByContextIntent implements IntentInterface
         // $data = $intentModel->getQueryResult()->getParameters();
         $value = $intentModel->getQueryResult()->getText();
 
-        $outPutContext = $intentModel->getQueryResult()->getOutputContexts();
-
         // $value = $data['value'];
 
         $methods = $this->dispatch($contexts, $value);
@@ -103,8 +101,8 @@ class SaveByContextIntent implements IntentInterface
          */
         $intentPayLoad = new IntentPayLoadModel();
 
-        // $intentPayLoad->setFulfillmentText(json_encode([$methods]));
-        // $intentPayLoad->addResponseMessage(json_encode([$methods]));
+        // $intentPayLoad->setFulfillmentText(json_encode($methods));
+        // $intentPayLoad->addResponseMessage(json_encode($methods));
         $intentPayLoad->setFulfillmentText($intentModel->getQueryResult()->getFullfillmentText());
         $intentPayLoad->setFulfillmentMessages($intentModel->getQueryResult()->getFullfillmentMessages());
 

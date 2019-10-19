@@ -111,13 +111,12 @@ class SolidjobsAppService extends Service
          */
 
         /**
-         * POST Request
+         * PUT Request
          */
         $out = $httpsService->put(
             self::SERVICE_URL . self::SERVICE_DIALOGFLOW_LOGIN,
             [
-                'Content-Type: application/json',
-                'User-Agent: DialogFlow WebHook'
+                'Content-Type: application/json'
             ],
             [
                 'dialogflow-session' => $dialogFlowSession
