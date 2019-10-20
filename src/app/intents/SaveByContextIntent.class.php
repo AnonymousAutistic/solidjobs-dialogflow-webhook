@@ -187,6 +187,11 @@ class SaveByContextIntent implements IntentInterface
         /** Remove prefix */
         $field = str_replace('add_cv_job_experience_', '', $context);
 
+        /**
+         * Parse field for transform to capital (pascal notation)
+         */
+        $field = self::parseFieldName($field);
+
         /** Create a new job experience */
         SolidjobsAppService::getInstance()->addJobExperience([$field => $value]);
     }
@@ -201,6 +206,11 @@ class SaveByContextIntent implements IntentInterface
     {
         /** Remove prefix */
         $field = str_replace('add_cv_training_', '', $context);
+
+        /**
+         * Parse field for transform to capital (pascal notation)
+         */
+        $field = self::parseFieldName($field);
 
         /** Create new training */
         SolidjobsAppService::getInstance()->addTraining([$field => $value]);
@@ -217,6 +227,11 @@ class SaveByContextIntent implements IntentInterface
         /** Remove prefix */
         $field = str_replace('add_cv_ability_', '', $context);
 
+        /**
+         * Parse field for transform to capital (pascal notation)
+         */
+        $field = self::parseFieldName($field);
+
         /** Create new empty CVAbility */
         SolidjobsAppService::getInstance()->addAbility([$field => $value]);
     }
@@ -231,6 +246,11 @@ class SaveByContextIntent implements IntentInterface
     {
         /** Remove prefix */
         $field = str_replace('add_cv_language_', '', $context);
+
+        /**
+         * Parse field for transform to capital (pascal notation)
+         */
+        $field = self::parseFieldName($field);
 
         /** Create new CVLanguage */
         SolidjobsAppService::getInstance()->addLanguage([$field => $value]);
@@ -279,7 +299,12 @@ class SaveByContextIntent implements IntentInterface
         $id = $lastJobExperience['id'];
 
         /** Remove prefix */
-        $field = str_replace('got_cv_personal_data_', '', $context);
+        $field = str_replace('got_cv_job_experience_', '', $context);
+
+        /**
+         * Parse field for transform to capital (pascal notation)
+         */
+        $field = self::parseFieldName($field);
 
         SolidjobsAppService::getInstance()->editJobExperience($id, [$field => $value]);
     }
@@ -299,7 +324,12 @@ class SaveByContextIntent implements IntentInterface
         $id = $lastTraining['id'];
 
         /** Remove prefix */
-        $field = str_replace('got_cv_personal_data_', '', $context);
+        $field = str_replace('got_cv_training_', '', $context);
+
+        /**
+         * Parse field for transform to capital (pascal notation)
+         */
+        $field = self::parseFieldName($field);
 
         SolidjobsAppService::getInstance()->editTraining($id, [$field => $value]);
     }
@@ -321,6 +351,11 @@ class SaveByContextIntent implements IntentInterface
         /** Remove prefix */
         $field = str_replace('got_cv_ability_', '', $context);
 
+        /**
+         * Parse field for transform to capital (pascal notation)
+         */
+        $field = self::parseFieldName($field);
+
         SolidjobsAppService::getInstance()->editAbility($id, [$field => $value]);
     }
 
@@ -340,6 +375,11 @@ class SaveByContextIntent implements IntentInterface
 
         /** Remove prefix */
         $field = str_replace('got_cv_language_', '', $context);
+
+        /**
+         * Parse field for transform to capital (pascal notation)
+         */
+        $field = self::parseFieldName($field);
 
         SolidjobsAppService::getInstance()->editLanguage($id, [$field => $value]);
     }
