@@ -87,12 +87,24 @@ class SaveByContextIntent implements IntentInterface
          */
 
         /**
-         * why parameters ? shouldn't be the phrase?
+         * Parameters are needed for parse text
          */
-        // $data = $intentModel->getQueryResult()->getParameters();
+        $data = $intentModel->getQueryResult()->getParameters();
+        /**
+         * Value by default is raw text
+         */
         $value = $intentModel->getQueryResult()->getText();
 
-        // $value = $data['value'];
+        /**
+         * Just in case there're some parameter, we get the first value
+         */
+        if(is_array($data) && count($data) > 0)
+        {
+            /**
+             * If there's some date, we change it to integer
+             */
+            $value = array_key_exists('date', $data) ? strtotime($data['date']) : array_values($data)[0];
+        }
 
         $methods = $this->dispatch($contexts, $value);
 
@@ -101,8 +113,9 @@ class SaveByContextIntent implements IntentInterface
          */
         $intentPayLoad = new IntentPayLoadModel();
 
-        // $intentPayLoad->setFulfillmentText(json_encode($methods));
-        // $intentPayLoad->addResponseMessage(json_encode($methods));
+        /**
+         * Return same text due our only proposal is to send data
+         */
         $intentPayLoad->setFulfillmentText($intentModel->getQueryResult()->getFullfillmentText());
         $intentPayLoad->setFulfillmentMessages($intentModel->getQueryResult()->getFullfillmentMessages());
 
