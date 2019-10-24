@@ -19,7 +19,7 @@ class SolidjobsAppService extends Service
 
     const SERVICE_PERSONAL_DATA = 'cv';
     const SERVICE_JOB_EXPERIENCE = 'cv/job_experience';
-    const SERVICE_TRAINING = 'cv/training';
+    const SERVICE_TRAINING = 'cv/training_experience';
     const SERVICE_ABILITY = 'cv/ability';
     const SERVICE_LANGUAGE = 'cv/language';
 
