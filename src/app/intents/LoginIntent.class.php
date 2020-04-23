@@ -61,7 +61,7 @@ class LoginIntent implements IntentInterface
 
             $message = 'Hola ' . $personalData['firstName'] . ', te doy la bienvenida a SolidJobs. ¿Quieres que creemos tu curriculum vitae?';
         } catch (\Throwable $throwable) {
-            $message = 'Ups, parece que hubo un problema iniciando sesión';
+            $message = 'Ups, no te he entendido bien. ¿Podrías repetirlo?';
         }
 
         /**
