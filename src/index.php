@@ -3,12 +3,14 @@
 require_once __DIR__ .'/../vendor/autoload.php';
 
 use Solidjobs\Intent\IntentChain;
+use Solidjobs\Intent\IntentModels\IntentPayLoadModel;
 
 /**
  * Application run
  */
 try{
 
+    error_log(0);
     /**
      * Instantiate IntentChain
      */
@@ -25,10 +27,18 @@ try{
     $intentChain->printResponse();
 
 } catch (\Throwable $throwable) {
-    // OOPS! @todo exception hierarchy
-    echo '<pre>' . json_encode([
-            'error' => $throwable->getMessage(),
-            'on' => $throwable->getFile() . ':' . $throwable->getLine(),
-            'trace' => $throwable->getTrace()
-        ], JSON_PRETTY_PRINT);
+    /*
+    $out = json_encode([
+        'error' => $throwable->getMessage(),
+        'on' => $throwable->getFile() . ':' . $throwable->getLine(),
+        'trace' => $throwable->getTrace()]);
+
+    $intentPayLoad = new IntentPayLoadModel();
+    $intentPayLoad->setFulfillmentText($out);
+    $intentPayLoad->addResponseMessage($out);
+
+    echo json_encode([
+        'fulfillmentText' => $intentPayLoad->getFulfillmentText(),
+        'fulfillmentMessages' => $intentPayLoad->getFulfillmentMessages()
+    ]);*/
 }

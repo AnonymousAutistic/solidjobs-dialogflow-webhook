@@ -62,6 +62,11 @@ class IntentChain
              * Perform login on SolidJobs service, so session is loaded
              */
             $this->login();
+            /*$payLoad = new IntentPayLoadModel();
+            $payLoad->setFulfillmentText(json_encode([SolidjobsAppService::getInstance()->getToken()]));
+            $payLoad->addResponseMessage(json_encode([SolidjobsAppService::getInstance()->getToken()]));
+            $this->setIntentPayLoad($payLoad);
+            return;*/
         }
 
         if (array_key_exists($intentName, self::$intents)) {
@@ -90,6 +95,8 @@ class IntentChain
      */
     public function printResponse()
     {
+        // $this->getIntentPayLoad()->setFulfillmentText('Esto es un test');
+        // $this->getIntentPayLoad()->addResponseMessage('Esto es un test');
         echo json_encode([
             'fulfillmentText' => $this->getIntentPayLoad()->getFulfillmentText(),
             'fulfillmentMessages' => $this->getIntentPayLoad()->getFulfillmentMessages()

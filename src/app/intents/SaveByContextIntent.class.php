@@ -116,6 +116,8 @@ class SaveByContextIntent implements IntentInterface
         /**
          * Return same text due our only proposal is to send data
          */
+        // $intentPayLoad->setFulfillmentText($intentModel->getQueryResult()->getFullfillmentText() . ' - ' . json_encode($methods));
+        // $intentPayLoad->addResponseMessage($intentModel->getQueryResult()->getFullfillmentText() . ' - ' .json_encode($methods));
         $intentPayLoad->setFulfillmentText($intentModel->getQueryResult()->getFullfillmentText());
         $intentPayLoad->setFulfillmentMessages($intentModel->getQueryResult()->getFullfillmentMessages());
 
