@@ -3,7 +3,6 @@
 require_once __DIR__ .'/../vendor/autoload.php';
 
 use Solidjobs\Intent\IntentChain;
-use Solidjobs\Intent\IntentModels\IntentPayLoadModel;
 
 /**
  * Application run
