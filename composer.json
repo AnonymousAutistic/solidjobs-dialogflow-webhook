@@ -1,6 +1,7 @@
 {
   "require": {
-    "google/cloud-dialogflow":  "*"
+    "google/cloud-dialogflow":  "*",
+    "hanschrome/rest-api-logs-client": "dev-release/0.2"
   },
   "autoload": {
     "psr-4": {
