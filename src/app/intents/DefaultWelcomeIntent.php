@@ -1,6 +1,6 @@
 <?php
 
-namespace Solidjobs\Intent\Intents;
+namespace SolidJobs\Intent\Intents;
 
 use Solidjobs\Intent\IntentInterface;
 use Solidjobs\Intent\IntentModels\IntentPayLoadModel;

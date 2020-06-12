@@ -1,6 +1,6 @@
 <?php
 
-namespace Solidjobs\Intent\IntentModels;
+namespace SolidJobs\Intent\IntentModels;
 
 class ResponseModel
 {

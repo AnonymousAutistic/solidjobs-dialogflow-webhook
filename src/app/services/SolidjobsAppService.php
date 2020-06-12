@@ -1,8 +1,8 @@
 <?php
 
-namespace Solidjobs\Intent\Services;
+namespace SolidJobs\Intent\Services;
 
-use Solidjobs\Intent\Service;
+use SolidJobs\Intent\Service;
 
 /**
  * This class has region directives for be able the quick navigation on it on Structure feature for IDEs

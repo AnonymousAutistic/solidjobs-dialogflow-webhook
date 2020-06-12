@@ -6,9 +6,9 @@
  * Time: 9:53
  */
 
-namespace Solidjobs\Intent\Services;
+namespace SolidJobs\Intent\Services;
 
-use Solidjobs\Intent\Service;
+use SolidJobs\Intent\Service;
 
 
 /**

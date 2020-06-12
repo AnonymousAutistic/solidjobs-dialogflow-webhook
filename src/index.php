@@ -5,8 +5,7 @@ require_once __DIR__ .'/../vendor/autoload.php';
 use RestApiLogsClient\Common\Client\RestApiLogsClientFactory;
 use RestApiLogsClient\Common\Configuration\GenericRestApiLogsConfiguration;
 use RestApiLogsClient\Common\Log\GenericLog;
-use Solidjobs\Intent\IntentChain;
-
+use SolidJobs\Intent\IntentChain;
 
 /**
  * @param Throwable $exception
@@ -61,7 +60,6 @@ try{
 
 } catch (\Throwable $throwable) {
     /* Add configurations to Factory*/
-
     $restApiLogsConfiguration = new GenericRestApiLogsConfiguration();
 
     /**
@@ -74,19 +72,4 @@ try{
     RestApiLogsClientFactory::addConfiguration($restApiLogsConfiguration);
 
     RestApiLogsClientFactory::get()->log(getDefaultGenericLog($throwable, 'EVALUATE'));
-
-    /*
-    $out = json_encode([
-        'error' => $throwable->getMessage(),
-        'on' => $throwable->getFile() . ':' . $throwable->getLine(),
-        'trace' => $throwable->getTrace()]);
-
-    $intentPayLoad = new IntentPayLoadModel();
-    $intentPayLoad->setFulfillmentText($out);
-    $intentPayLoad->addResponseMessage($out);
-
-    echo json_encode([
-        'fulfillmentText' => $intentPayLoad->getFulfillmentText(),
-        'fulfillmentMessages' => $intentPayLoad->getFulfillmentMessages()
-    ]);*/
 }

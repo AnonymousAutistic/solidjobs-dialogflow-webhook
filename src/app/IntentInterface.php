@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Solidjobs\Intent;
+namespace SolidJobs\Intent;
 
 
-use Solidjobs\Intent\IntentModels\IntentPayLoadModel;
-use Solidjobs\Intent\IntentModels\ResponseModel;
+use SolidJobs\Intent\IntentModels\IntentPayLoadModel;
+use SolidJobs\Intent\IntentModels\ResponseModel;
 
 interface IntentInterface
 {

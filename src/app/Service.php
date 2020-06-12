@@ -6,7 +6,7 @@
  * Time: 10:19
  */
 
-namespace Solidjobs\Intent;
+namespace SolidJobs\Intent;
 
 /**
  * Class Service

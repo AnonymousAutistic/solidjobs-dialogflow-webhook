@@ -1,13 +1,13 @@
 <?php
 
-namespace Solidjobs\Intent;
+namespace SolidJobs\Intent;
 
-use Solidjobs\Intent\IntentModels\IntentPayLoadModel;
-use Solidjobs\Intent\IntentModels\ResponseModel;
-use Solidjobs\Intent\Intents\DefaultWelcomeIntent;
-use Solidjobs\Intent\Intents\LoginIntent;
-use Solidjobs\Intent\Intents\SaveByContextIntent;
-use Solidjobs\Intent\Services\SolidjobsAppService;
+use SolidJobs\Intent\IntentModels\IntentPayLoadModel;
+use SolidJobs\Intent\IntentModels\ResponseModel;
+use SolidJobs\Intent\Intents\DefaultWelcomeIntent;
+use SolidJobs\Intent\Intents\LoginIntent;
+use SolidJobs\Intent\Intents\SaveByContextIntent;
+use SolidJobs\Intent\Services\SolidjobsAppService;
 
 /**
  * Class IntentChain

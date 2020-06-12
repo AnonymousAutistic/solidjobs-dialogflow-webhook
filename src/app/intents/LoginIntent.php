@@ -6,13 +6,13 @@
  * Time: 14:56
  */
 
-namespace Solidjobs\Intent\Intents;
+namespace SolidJobs\Intent\Intents;
 
 
-use Solidjobs\Intent\IntentInterface;
-use Solidjobs\Intent\IntentModels\IntentPayLoadModel;
-use Solidjobs\Intent\IntentModels\ResponseModel;
-use Solidjobs\Intent\Services\SolidjobsAppService;
+use SolidJobs\Intent\IntentInterface;
+use SolidJobs\Intent\IntentModels\IntentPayLoadModel;
+use SolidJobs\Intent\IntentModels\ResponseModel;
+use SolidJobs\Intent\Services\SolidjobsAppService;
 
 class LoginIntent implements IntentInterface
 {
