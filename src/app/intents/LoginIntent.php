@@ -60,7 +60,7 @@ class LoginIntent implements IntentInterface
             $personalData = SolidjobsAppService::getInstance()->getPersonalData();
 
             $message = 'Hola ' . $personalData['firstName'] . ', soy Ote, tu asistente virtual.' .
-                ' ¿Quieres que creemos tu curriculum vitae? (Sí / No)';
+                ' Voy a ayudarte a crear tu curriculum. ¿Has leído y aceptas la Política de privacidad y la Política de cookies? (Sí / No)';
         } catch (\Throwable $throwable) {
             $message = 'Ups, no te he entendido bien. ¿Podrías repetirlo?';
         }
